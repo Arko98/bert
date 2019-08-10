@@ -22,6 +22,7 @@ import os
 import modeling
 import optimization
 import tensorflow as tf
+import pdb
 
 flags = tf.flags
 
@@ -127,7 +128,8 @@ def model_fn_builder(bert_config, init_checkpoint, learning_rate,
     next_sentence_labels = features["next_sentence_labels"]
 
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
-
+    
+    pdb.set_trace()#modified
     model = modeling.BertModel(
         config=bert_config,
         is_training=is_training,
