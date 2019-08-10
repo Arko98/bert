@@ -5,6 +5,8 @@ import tensorflow as tf
 import tensorflow.contrib.graph_editor as ge
 import time
 import sys
+import inspect
+import logging
 sys.setrecursionlimit(10000)
 # refers back to current module if we decide to split helpers out
 util = sys.modules[__name__]
@@ -63,6 +65,13 @@ def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
     '''
 
     #    print("Calling memsaving gradients with", checkpoints)
+    
+    curframe = inspect.currentframe()
+    calframe = inspect.getouterframes(curframe, 2)
+    #print(inspect.getouterframes(curframe, 1))
+    
+    logging.warning('INSIDE MODIFIED GRAD caller name:{} '.format(calframe[1][3]))
+ 
     if not isinstance(ys,list):
         ys = [ys]
     if not isinstance(xs,list):
