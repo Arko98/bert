@@ -33,12 +33,27 @@ MIN_CHECKPOINT_NODE_SIZE=1024    # use lower value during testing
 
 # specific versions we can use to do process-wide replacement of tf.gradients
 def gradients_speed(ys, xs, grad_ys=None, **kwargs):
+    curframe = inspect.currentframe()
+    calframe = inspect.getouterframes(curframe, 2)
+    #print(inspect.getouterframes(curframe, 1))
+    
+    logging.warning('INSIDE MODIFIED GRAD(SPEED) caller name:{} '.format(calframe[1][3]))
     return gradients(ys, xs, grad_ys, checkpoints='speed', **kwargs)
 
 def gradients_memory(ys, xs, grad_ys=None, **kwargs):
+    curframe = inspect.currentframe()
+    calframe = inspect.getouterframes(curframe, 2)
+    #print(inspect.getouterframes(curframe, 1))
+    
+    logging.warning('INSIDE MODIFIED GRAD(MEMORY) caller name:{} '.format(calframe[1][3]))
     return gradients(ys, xs, grad_ys, checkpoints='memory', **kwargs)
         
 def gradients_collection(ys, xs, grad_ys=None, **kwargs):
+    curframe = inspect.currentframe()
+    calframe = inspect.getouterframes(curframe, 2)
+    #print(inspect.getouterframes(curframe, 1))
+    
+    logging.warning('INSIDE MODIFIED GRAD(COLLECTION) caller name:{} '.format(calframe[1][3]))
     return gradients(ys, xs, grad_ys, checkpoints='collection', **kwargs)
 
 def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
