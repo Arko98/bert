@@ -28,6 +28,9 @@ import six
 import tensorflow as tf
 
 
+import memory_saving_gradients
+# monkey patch tf.gradients to point to our custom version, with automatic checkpoint selection
+tf.__dict__["gradients"] = memory_saving_gradients.gradients_speed
 class BertConfig(object):
   """Configuration for `BertModel`."""
 
