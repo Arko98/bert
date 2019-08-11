@@ -46,7 +46,7 @@ def gradients_memory(ys, xs, grad_ys=None, **kwargs):
     #print(inspect.getouterframes(curframe, 1))
     
     logging.warning('INSIDE MODIFIED GRAD(MEMORY) caller name:{} '.format(calframe[1][3]))
-    logging.warning('initial ckpt {}'.format(tf.get_collection('checkpoints'))
+    logging.warning('initial ckpt {}'.format(tf.get_collection('checkpoints')))
     return gradients(ys, xs, grad_ys, checkpoints='memory', **kwargs)
         
 def gradients_collection(ys, xs, grad_ys=None, **kwargs):
