@@ -185,7 +185,7 @@ def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
             N = len(ts_filtered)
             if len(bottleneck_ts) <= np.ceil(np.sqrt(N)):
                 checkpoints = sorted_bottlenecks
-                logging.warning('INSIDE MEMORY WITH CHECKPOINT {}'.format(checkpoint)s)
+                logging.warning('INSIDE MEMORY WITH CHECKPOINT {}'.format(checkpoints))
             else:
                 step = int(np.ceil(len(bottleneck_ts) / np.sqrt(N)))
                 checkpoints = sorted_bottlenecks[step::step]
