@@ -199,7 +199,7 @@ def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
     logging.warning('FINAL CKPT : {}'.format(checkpoints))
     
     #FOR MEMORY POOR OPS SET checkpoints to an empty list
-    checkpoints = list()
+    checkpoints = checkpoints[0:5]
     # at this point automatic selection happened and checkpoints is list of nodes
     assert isinstance(checkpoints, list)
 
