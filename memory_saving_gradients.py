@@ -121,11 +121,12 @@ def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
     if type(checkpoints) is not list:
         if checkpoints == 'collection':
             checkpoints = tf.get_collection('checkpoints')
+            logging.warning('INSIDE COLLECTION WITH CHECKPOINT {}'.format(checkpoint))
             
         elif checkpoints == 'speed':
             # checkpoint all expensive ops to maximize running speed
             checkpoints = ge.filter_ts_from_regex(fwd_ops, 'conv2d|Conv|MatMul')
-            
+            logging.warning('INSIDE SPEED WITH CHECKPOINT {}'.format(checkpoint))
         elif checkpoints == 'memory':
 
             # remove very small tensors and some weird ops
@@ -184,9 +185,11 @@ def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
             N = len(ts_filtered)
             if len(bottleneck_ts) <= np.ceil(np.sqrt(N)):
                 checkpoints = sorted_bottlenecks
+                logging.warning('INSIDE MEMORY WITH CHECKPOINT {}'.format(checkpoint))
             else:
                 step = int(np.ceil(len(bottleneck_ts) / np.sqrt(N)))
                 checkpoints = sorted_bottlenecks[step::step]
+                logging.warning('INSIDE MEMORY WITH CHECKPOINT {}'.format(checkpoint))
             
         else:
             raise Exception('%s is unsupported input for "checkpoints"' % (checkpoints,))
