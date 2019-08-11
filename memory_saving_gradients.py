@@ -46,6 +46,7 @@ def gradients_memory(ys, xs, grad_ys=None, **kwargs):
     #print(inspect.getouterframes(curframe, 1))
     
     logging.warning('INSIDE MODIFIED GRAD(MEMORY) caller name:{} '.format(calframe[1][3]))
+    logging.warning('initial ckpt {}'.format(tf.get_collection('checkpoints'))
     return gradients(ys, xs, grad_ys, checkpoints='memory', **kwargs)
         
 def gradients_collection(ys, xs, grad_ys=None, **kwargs):
@@ -196,6 +197,9 @@ def gradients(ys, xs, grad_ys=None, checkpoints='collection', **kwargs):
 
     checkpoints = list(set(checkpoints).intersection(ts_all))
     logging.warning('FINAL CKPT : {}'.format(checkpoints))
+    
+    #FOR MEMORY POOR OPS SET checkpoints to an empty list
+    checkpoints = list()
     # at this point automatic selection happened and checkpoints is list of nodes
     assert isinstance(checkpoints, list)
 
