@@ -109,6 +109,7 @@ def create_optimizer(loss, init_lr, num_train_steps, num_warmup_steps, use_tpu):
                    lambda: optimizer.apply_gradients(zip([None for _ in grads], tvars), global_step=global_step))
 
   # reset accumulation when necessary
+  """
   def reset():
       counter = 0
       for i, s in enumerate(sum_gradient):
@@ -122,12 +123,13 @@ def create_optimizer(loss, init_lr, num_train_steps, num_warmup_steps, use_tpu):
       reset_ops = tf.cond(tf.math.equal(do_update, 1.),
                           reset,
                           tf.no_op)
+  """
   # the 2 branches must have identical structure, [op1, op2, ...] || no_op cannot be valid cond branch.
   # tf.group to convert all resets into 1 op and match with no_op: tf.group() || np_op
 
   # Increment global step
   new_global_step = global_step + 1
-  train_op = tf.group(*sum_ops, [train_op, global_step.assign(new_global_step), reset_ops])
+  train_op = tf.group(*sum_ops, [train_op, global_step.assign(new_global_step)])
   """
   train_op = optimizer.apply_gradients(
       zip(grads, tvars), global_step=global_step)
