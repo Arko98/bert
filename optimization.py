@@ -19,6 +19,7 @@ from __future__ import division
 from __future__ import print_function
 
 import re
+import logging
 import tensorflow as tf
 
 
@@ -69,8 +70,9 @@ def create_optimizer(loss, init_lr, num_train_steps, num_warmup_steps, use_tpu):
 
   tvars = tf.trainable_variables()
   grads = tf.gradients(loss, tvars)
-  
-
+  gradient_accmulation_multiplier = 12
+  logging.warning('tvars {}'.format(tvars))
+  logging.warning('grads {}'.format(grads))
   # This is how the model was pre-trained.
   (grads, _) = tf.clip_by_global_norm(grads, clip_norm=1.0)
   sum_gradient = [tf.get_variable(name="sum_grads" + str(i), shape=tv.shape,
@@ -80,7 +82,7 @@ def create_optimizer(loss, init_lr, num_train_steps, num_warmup_steps, use_tpu):
                                 collections=[tf.GraphKeys.LOCAL_VARIABLES]) for i, tv in enumerate(tvars)]
   sum_ops = []
   unused_variable_in_batch = []
-
+  logging.warning('sum gradient {}'.format(sum_gradient))
   # gradient accumulation
   for i, gv in enumerate(grads):
       if gv is not None:
